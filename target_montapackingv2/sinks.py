@@ -40,11 +40,11 @@ class InboundForecastSink(MontapackingSink):
                 buy_order_response = self.request_api(
                     "POST", endpoint=endpoint, request_data=record
                 )
-                self.logger.info(f"BuyOrder created succesfully")
+                buy_order_reference = buy_order_response.json()["Reference"]
+                self.logger.info(f"BuyOrder created succesfully with Reference {buy_order_reference}")
             except:
                 raise KeyError
-            return None, True, state_updates
-
+            return buy_order_reference, True, state_updates
 
 
 class UpdateInventory(MontapackingSink):
