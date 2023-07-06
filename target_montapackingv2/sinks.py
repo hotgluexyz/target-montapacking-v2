@@ -34,17 +34,21 @@ class InboundForecastSink(MontapackingSink):
     def upsert_record(self, record: dict, context: dict):
         endpoint = "inboundforecast/group"
         state_updates = dict()
-
+        state_updates['errors'] = []
         if record:
             try:
+                state_updates['success'] = True
                 buy_order_response = self.request_api(
                     "POST", endpoint=endpoint, request_data=record
                 )
                 buy_order_reference = buy_order_response.json()["Reference"]
                 self.logger.info(f"BuyOrder created succesfully with Reference {buy_order_reference}")
-            except:
-                raise KeyError
-            return buy_order_reference, True, state_updates
+                return buy_order_reference, True, state_updates
+            #Job should not fail.    
+            except Exception as e:
+                state_updates['success'] = False
+                state_updates['errors'].append(str(e))
+                return None, False, state_updates
 
 
 class UpdateInventory(MontapackingSink):
