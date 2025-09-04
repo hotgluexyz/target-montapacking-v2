@@ -9,7 +9,7 @@ class MontapackingSink(HotglueSink):
 
     @property
     def base_url(self) -> str:
-        base_url = f"https://api.montapacking.nl/rest/v5/"
+        base_url = f"https://api-v6.monta.nl/"
         return base_url
     
     @property
