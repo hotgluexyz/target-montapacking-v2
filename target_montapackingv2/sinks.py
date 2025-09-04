@@ -41,9 +41,10 @@ class InboundForecastSink(MontapackingSink):
                 buy_order_response = self.request_api(
                     "POST", endpoint=endpoint, request_data=record
                 )
-                buy_order_reference = buy_order_response.json()["Reference"]
-                self.logger.info(f"BuyOrder created succesfully with Reference {buy_order_reference}")
-                return buy_order_reference, True, state_updates
+                buy_order_remoteId = buy_order_response.json()["UniqueId"]
+                # input_id = record.get("id")
+                self.logger.info(f"BuyOrder created succesfully with UniqueId {buy_order_remoteId}")
+                return buy_order_remoteId, True, state_updates
             #Job should not fail.    
             except Exception as e:
                 state_updates['success'] = False
