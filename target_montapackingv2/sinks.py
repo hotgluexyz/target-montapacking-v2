@@ -34,7 +34,7 @@ class InboundForecastSink(MontapackingSink):
     def upsert_record(self, record: dict, context: dict):
         endpoint = "inboundforecast/group"
         state_updates = dict()
-        state_updates['errors'] = []
+        state_updates['error'] = []
         if record:
             try:
                 state_updates['success'] = True
@@ -48,7 +48,7 @@ class InboundForecastSink(MontapackingSink):
             #Job should not fail.    
             except Exception as e:
                 state_updates['success'] = False
-                state_updates['errors'].append(str(e))
+                state_updates['error'].append(str(e))
                 return None, False, state_updates
 
 
